@@ -1,8 +1,6 @@
-import { expect, it } from 'vitest'
-
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CreateQuestionUseCase } from './create-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
@@ -22,8 +20,8 @@ describe('Create Question', () => {
   it('should be able to create a question', async () => {
     const result = await sut.execute({
       authorId: '1',
-      title: 'Nova Pergunta',
-      content: 'Conteúdo da Pergunta',
+      title: 'Nova pergunta',
+      content: 'Conteúdo da pergunta',
       attachmentsIds: ['1', '2'],
     })
 

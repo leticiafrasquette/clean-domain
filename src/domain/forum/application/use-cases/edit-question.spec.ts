@@ -1,12 +1,10 @@
-import { expect, it } from 'vitest'
+import { EditQuestionUseCase } from './edit-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { makeQuestion } from 'test/factories/make-question'
-
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { EditQuestionUseCase } from './edit-question'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
-import { makeQuestionAttachment } from 'test/factories/make-question-attachment'
+import { makeQuestionAttachment } from 'test/factories/make-question-attachments'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
@@ -59,6 +57,7 @@ describe('Edit Question', () => {
       title: 'Pergunta teste',
       content: 'Conteúdo teste',
     })
+
     expect(
       inMemoryQuestionsRepository.items[0].attachments.currentItems,
     ).toHaveLength(2)

@@ -46,6 +46,7 @@ export class Notification extends Entity<NotificationProps> {
       },
       id,
     )
+
     return notification
   }
 }

@@ -1,6 +1,6 @@
-import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
-import { Question } from '../../enterprise/entities/question'
-import { QuestionsRepository } from '../repositories/questions-repository'
+import { AnswersRepository } from '../repositories/answers-repository'
+import { Question } from '@/domain/forum/enterprise/entities/question'
+import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
@@ -19,13 +19,13 @@ type ChooseQuestionBestAnswerUseCaseResponse = Either<
 
 export class ChooseQuestionBestAnswerUseCase {
   constructor(
-    private aquestionsRepository: QuestionsRepository,
+    private questionsRepository: QuestionsRepository,
     private answersRepository: AnswersRepository,
   ) {}
 
   async execute({
-    authorId,
     answerId,
+    authorId,
   }: ChooseQuestionBestAnswerUseCaseRequest): Promise<ChooseQuestionBestAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
@@ -33,8 +33,8 @@ export class ChooseQuestionBestAnswerUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const question = await this.aquestionsRepository.findById(
-      answer.questionId.toValue(),
+    const question = await this.questionsRepository.findById(
+      answer.questionId.toString(),
     )
 
     if (!question) {
@@ -47,7 +47,7 @@ export class ChooseQuestionBestAnswerUseCase {
 
     question.bestAnswerId = answer.id
 
-    await this.aquestionsRepository.save(question)
+    await this.questionsRepository.save(question)
 
     return right({
       question,

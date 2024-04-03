@@ -1,11 +1,10 @@
-import { expect, it } from 'vitest'
+import { DeleteQuestionUseCase } from './delete-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { makeQuestion } from 'test/factories/make-question'
-import { DeleteQuestionUseCase } from './delete-question'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
-import { makeQuestionAttachment } from 'test/factories/make-question-attachment'
+import { makeQuestionAttachment } from 'test/factories/make-question-attachments'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
@@ -18,6 +17,7 @@ describe('Delete Question', () => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
     )
+
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
   })
 

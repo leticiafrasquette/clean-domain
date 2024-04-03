@@ -1,11 +1,10 @@
-import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
-import { expect, it } from 'vitest'
 import { EditAnswerUseCase } from './edit-answer'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { makeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
-import { makeAnswerAttachment } from 'test/factories/make-answer-attachment'
+import { makeAnswerAttachment } from 'test/factories/make-answer-attachments'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
@@ -25,12 +24,12 @@ describe('Edit Answer', () => {
     )
   })
 
-  it('should be able to edit an answer', async () => {
+  it('should be able to edit a answer', async () => {
     const newAnswer = makeAnswer(
       {
         authorId: new UniqueEntityID('author-1'),
       },
-      new UniqueEntityID('Answer-1'),
+      new UniqueEntityID('answer-1'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)
@@ -56,6 +55,7 @@ describe('Edit Answer', () => {
     expect(inMemoryAnswersRepository.items[0]).toMatchObject({
       content: 'Conteúdo teste',
     })
+
     expect(
       inMemoryAnswersRepository.items[0].attachments.currentItems,
     ).toHaveLength(2)
@@ -67,12 +67,12 @@ describe('Edit Answer', () => {
     )
   })
 
-  it('should not be able to edit an answer from another user', async () => {
+  it('should not be able to edit a answer from another user', async () => {
     const newAnswer = makeAnswer(
       {
         authorId: new UniqueEntityID('author-1'),
       },
-      new UniqueEntityID('Answer-1'),
+      new UniqueEntityID('answer-1'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)
@@ -80,10 +80,10 @@ describe('Edit Answer', () => {
     const result = await sut.execute({
       answerId: newAnswer.id.toValue(),
       authorId: 'author-2',
-      attachmentsIds: [],
-
       content: 'Conteúdo teste',
+      attachmentsIds: [],
     })
+
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
